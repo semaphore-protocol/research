@@ -1,0 +1,4 @@
+circom
+node_modules
+results
+*.r1cs
