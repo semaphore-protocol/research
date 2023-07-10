@@ -1,0 +1,14 @@
+{
+    "name": "circuits",
+    "private": true,
+    "scripts": {
+        "start": "yarn run:v4 && yarn run:v3 && yarn run:eddsa && yarn run:smt",
+        "run:v4": "./circom semaphore-v4/semaphore.circom --r1cs",
+        "run:v3": "./circom semaphore-v3/semaphore.circom --r1cs",
+        "run:eddsa": "./circom semaphore-eddsa/semaphore.circom --r1cs",
+        "run:smt": "./circom semaphore-smt/semaphore.circom --r1cs"
+    },
+    "dependencies": {
+        "circomlib": "^2.0.2"
+    }
+}
