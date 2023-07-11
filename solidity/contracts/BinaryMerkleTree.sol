@@ -3,8 +3,6 @@ pragma solidity ^0.8.4;
 
 import {PoseidonT3} from "poseidon-solidity/PoseidonT3.sol";
 
-uint256 constant ARITY = 2;
-
 struct MerkleTreeData {
     uint256 size;
     uint256 depth;
@@ -12,7 +10,7 @@ struct MerkleTreeData {
     mapping(uint256 => bool) leaves;
 }
 
-library MerkleTree {
+library BinaryMerkleTree {
     uint256 internal constant SNARK_SCALAR_FIELD =
         21888242871839275222246405745257275088548364400416034343698204186575808495617;
 
@@ -21,7 +19,7 @@ library MerkleTree {
         require(leaf != 0, "MerkleTree: leaf cannot equal zero");
         require(!has(self, leaf), "MerkleTree: leaf already exists");
 
-        while (ARITY**self.depth < self.size + 1) {
+        while (2**self.depth < self.size + 1) {
             self.depth += 1;
         }
 
@@ -29,14 +27,13 @@ library MerkleTree {
         uint256 node = leaf;
 
         for (uint256 i = 0; i < self.depth; ) {
-            if (index % ARITY != 0) {
+            if (index >> i & 1 == 1) {
                 node = PoseidonT3.hash([self.siblings[i], node]);
             } else {
                 self.siblings[i] = node;
             }
 
             unchecked {
-                index /= ARITY;
                 ++i;
             }
         }
