@@ -6,36 +6,37 @@ include "./tree.circom";
 
 template Semaphore(MAX_DEPTH) {
     signal input privateKey;
+
     signal input treeIndex;
     signal input treeDepth;
     signal input treeSiblings[MAX_DEPTH];
 
-    signal input signalHash;
+    signal input message;
     signal input topic;
 
-    signal output root;
+    signal output treeRoot;
     signal output nullifierHash;
 
     component babyPbk = BabyPbk();
     babyPbk.in <== privateKey;
 
-    component inclusionProof = MerkleTreeInclusionProof(MAX_DEPTH);
-    inclusionProof.leaf <== babyPbk.Ay;
-    inclusionProof.index <== treeIndex;
-    inclusionProof.depth <== treeDepth;
+    component calculateTreeRoot = TreeRoot(MAX_DEPTH);
+    calculateTreeRoot.leaf <== babyPbk.Ay;
+    calculateTreeRoot.index <== treeIndex;
+    calculateTreeRoot.depth <== treeDepth;
 
     for (var i = 0; i < MAX_DEPTH; i++) {
-        inclusionProof.siblings[i] <== treeSiblings[i];
+        calculateTreeRoot.siblings[i] <== treeSiblings[i];
     }
 
-    root <== inclusionProof.root;
+    treeRoot <== calculateTreeRoot.out;
 
-    component poseidon2 = Poseidon(2);
+    component poseidon = Poseidon(2);
 
-    poseidon2.inputs[0] <== topic;
-    poseidon2.inputs[1] <== privateKey;
+    poseidon.inputs[0] <== topic;
+    poseidon.inputs[1] <== privateKey;
 
-    nullifierHash <== poseidon2.out;
+    nullifierHash <== poseidon.out;
 }
 
-component main {public [signalHash, topic]} = Semaphore(30);
+component main {public [message, topic]} = Semaphore(30);

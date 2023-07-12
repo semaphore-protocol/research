@@ -4,13 +4,13 @@ include "../node_modules/circomlib/circuits/poseidon.circom";
 include "../node_modules/circomlib/circuits/mux1.circom";
 include "../node_modules/circomlib/circuits/comparators.circom";
 
-template MerkleTreeInclusionProof(MAX_DEPTH) {
+template TreeRoot(MAX_DEPTH) {
     signal input leaf;
     signal input index;
     signal input depth;
     signal input siblings[MAX_DEPTH];
 
-    signal output root;
+    signal output out;
 
     component poseidon[MAX_DEPTH];
     component mux[MAX_DEPTH];
@@ -50,5 +50,5 @@ template MerkleTreeInclusionProof(MAX_DEPTH) {
         root_sum += root_vals[i];
     }
 
-    root <== root_sum;
+    out <== root_sum;
 }
