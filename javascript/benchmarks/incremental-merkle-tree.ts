@@ -11,23 +11,25 @@ export default async function run() {
     const tree1 = new IncrementalMerkleTree((a, b) => poseidon2([a, b]))
     const tree2 = new OIncrementalMerkleTree(poseidon2, 20, BigInt(0), 2)
 
-    const numberOfLeaves = 2 ** 6
+    const numberOfLeaves = 2 ** 12
+
+    const leaves: any[] = []
+
+    for (let i = 0; i < numberOfLeaves; i += 1) {
+        leaves.push(i + 1)
+    }
 
     const fn1: FN = [
         `New IncrementalMerkleTree - insert (${numberOfLeaves} leaves)`,
         () => {
-            for (let i = 0; i < numberOfLeaves; i += 1) {
-                tree1.insert(i + 1)
-            }
+            new IncrementalMerkleTree((a, b) => poseidon2([a, b]), leaves)
         }
     ]
 
     const fn2: FN = [
         `Old IncrementalMerkleTree - insert (${numberOfLeaves} leaves)`,
         () => {
-            for (let i = 0; i < numberOfLeaves; i += 1) {
-                tree2.insert(i + 1)
-            }
+            new OIncrementalMerkleTree(poseidon2, 20, BigInt(0), 2, leaves)
         }
     ]
 
