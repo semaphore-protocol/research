@@ -2,10 +2,10 @@
     "name": "circuits",
     "private": true,
     "scripts": {
-        "start": "yarn run:v4 && yarn run:v3 && yarn run:hash",
+        "start": "yarn run:v4 && yarn run:v3 && yarn run:poseidon",
         "run:v4": "./circom semaphore-v4/semaphore.circom --r1cs",
         "run:v3": "./circom semaphore-v3/semaphore.circom --r1cs",
-        "run:hash": "./circom hash/hash.circom --r1cs"
+        "run:poseidon": "./circom poseidon/poseidon.circom --r1cs"
     },
     "dependencies": {
         "circomlib": "^2.0.2"
