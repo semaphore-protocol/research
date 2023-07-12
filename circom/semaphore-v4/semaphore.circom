@@ -12,10 +12,12 @@ template Semaphore(MAX_DEPTH) {
 
     signal output treeRoot, nullifier;
 
-    component babyPbk = BabyPbk();
-    babyPbk.in <== privateKey;
+    var Ax, Ay;
+    (Ax, Ay) = BabyPbk()(privateKey);
 
-    treeRoot <== CalculateTreeRoot(MAX_DEPTH)(babyPbk.Ay, treeDepth, treeIndices, treeSiblings);
+    var leaf = Poseidon(2)([Ax, Ay]);
+
+    treeRoot <== CalculateTreeRoot(MAX_DEPTH)(leaf, treeDepth, treeIndices, treeSiblings);
     nullifier <== Poseidon(2)([topic, privateKey]);
 }
 
