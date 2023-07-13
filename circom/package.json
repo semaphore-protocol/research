@@ -2,10 +2,11 @@
     "name": "circuits",
     "private": true,
     "scripts": {
-        "start": "yarn run:v4 && yarn run:v3 && yarn run:poseidon",
-        "run:v4": "./circom semaphore-v4/semaphore.circom --r1cs",
-        "run:v3": "./circom semaphore-v3/semaphore.circom --r1cs",
-        "run:poseidon": "./circom poseidon/poseidon.circom --r1cs"
+        "start": "yarn run:v4 && yarn run:v3 && yarn run:preimage-proof && yarn run:merkle-proof",
+        "run:v4": "./circom semaphore-v4/index.circom --r1cs",
+        "run:v3": "./circom semaphore-v3/index.circom --r1cs",
+        "run:preimage-proof": "./circom preimage-proof/index.circom --r1cs",
+        "run:merkle-proof": "./circom merkle-proof/index.circom --r1cs"
     },
     "dependencies": {
         "circomlib": "^2.0.2"

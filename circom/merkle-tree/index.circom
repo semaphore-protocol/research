@@ -4,7 +4,7 @@ include "../node_modules/circomlib/circuits/poseidon.circom";
 include "../node_modules/circomlib/circuits/mux1.circom";
 include "../node_modules/circomlib/circuits/comparators.circom";
 
-template CalculateTreeRoot(MAX_DEPTH) {
+template CalculateMerkleRoot(MAX_DEPTH) {
     signal input leaf, depth, indices[MAX_DEPTH], siblings[MAX_DEPTH];
 
     signal output out;

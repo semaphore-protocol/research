@@ -1,7 +1,7 @@
 pragma circom 2.0.0;
 
 include "../node_modules/circomlib/circuits/poseidon.circom";
-include "./tree.circom";
+include "../merkle-tree/index.circom";
 
 template Semaphore(MAX_DEPTH) {
     signal input identitySecret;
@@ -13,7 +13,7 @@ template Semaphore(MAX_DEPTH) {
 
     var leaf = Poseidon(1)([identitySecret]);
 
-    treeRoot <== CalculateTreeRoot(MAX_DEPTH)(leaf, treeDepth, treeIndices, treeSiblings);
+    treeRoot <== CalculateMerkleRoot(MAX_DEPTH)(leaf, treeDepth, treeIndices, treeSiblings);
     nullifier <== Poseidon(2)([topic, identitySecret]);
 }
 
