@@ -1387,6 +1387,7 @@ version = "0.1.0"
 dependencies = [
  "ark-bn254",
  "ark-circom",
+ "ark-crypto-primitives",
  "ark-groth16",
  "ark-std",
  "color-eyre",
