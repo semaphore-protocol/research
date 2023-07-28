@@ -11,7 +11,7 @@ struct MerkleTreeData {
     uint256 size;
     uint256 depth;
     mapping(uint256 => uint256) siblings;
-    mapping(uint256 => bool) leaves;
+    mapping(uint256 => uint256) leaves;
 }
 
 error ArityCannotBeZero();
@@ -38,6 +38,9 @@ library MerkleTree {
         self.arity = arity;
     }
 
+    /// @dev Inserts a new leaf in the tree.
+    /// @param self: Tree data.
+    /// @param leaf: Leaf to be inserted.
     function insert(MerkleTreeData storage self, uint256 leaf) public returns (uint256) {
         if (self.arity == 0) {
             revert TreeNotInitialized();
@@ -72,13 +75,17 @@ library MerkleTree {
         self.size += 1;
 
         self.siblings[self.depth] = node;
-        self.leaves[leaf] = true;
+        self.leaves[leaf] = self.size;
 
         return node;
     }
 
     function has(MerkleTreeData storage self, uint256 leaf) public view returns (bool) {
-        return self.leaves[leaf];
+        return self.leaves[leaf] != 0;
+    }
+
+    function indexOf(MerkleTreeData storage self, uint256 leaf) public view returns (uint256) {
+        return self.leaves[leaf] - 1;
     }
 
     function root(MerkleTreeData storage self) public view returns (uint256) {
