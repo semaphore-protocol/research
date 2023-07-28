@@ -51,6 +51,7 @@ describe("BinaryMerkleTreeTest", () => {
         const treeId = ethers.utils.formatBytes32String("generic-tree")
 
         const tree = createTree(0)
+        await merkleTree.createTree(treeId, 2)
 
         for (let i = 0; i < 100; i += 1) {
             tree.insert(BigInt(i + 1))
