@@ -10,16 +10,19 @@ struct MerkleTreeData {
     uint256 arity;
     uint256 size;
     uint256 depth;
-    mapping(uint256 => uint256) siblings;
+    mapping(uint256 => uint256) rightmostNodes;
     mapping(uint256 => uint256) leaves;
 }
 
-error ArityCannotBeZero();
+error TreeArityCannotBeZero();
+error WrongTreeDepth();
+error WrongSiblingNodes();
 error TreeAlreadyInitialized();
 error TreeNotInitialized();
 error LeafGreaterThanSnarkScalarField();
 error LeafCannotBeZero();
 error LeafAlreadyExists();
+error LeafDoesNotExist();
 
 library MerkleTree {
     /// @dev Initializes a tree with a specific arity.
@@ -30,7 +33,7 @@ library MerkleTree {
         uint256 arity
     ) public {
         if (arity == 0) {
-            revert ArityCannotBeZero();
+            revert TreeArityCannotBeZero();
         } else if (self.arity != 0) {
             revert TreeAlreadyInitialized();
         }
@@ -61,9 +64,9 @@ library MerkleTree {
 
         for (uint256 i = 0; i < self.depth; ) {
             if (index % self.arity != 0) {
-                node = PoseidonT3.hash([self.siblings[i], node]);
+                node = PoseidonT3.hash([self.rightmostNodes[i], node]);
             } else {
-                self.siblings[i] = node;
+                self.rightmostNodes[i] = node;
             }
 
             unchecked {
@@ -74,10 +77,69 @@ library MerkleTree {
 
         self.size += 1;
 
-        self.siblings[self.depth] = node;
+        self.rightmostNodes[self.depth] = node;
         self.leaves[leaf] = self.size;
 
         return node;
+    }
+
+    function update(
+        MerkleTreeData storage self,
+        uint256 oldLeaf,
+        uint256 newLeaf,
+        uint256[] calldata siblingNodes
+    ) public returns (uint256) {
+        if (self.arity == 0) {
+            revert TreeNotInitialized();
+        } else if (newLeaf >= SNARK_SCALAR_FIELD) {
+            revert LeafGreaterThanSnarkScalarField();
+        } else if (!has(self, oldLeaf)) {
+            revert LeafDoesNotExist();
+        } else if (siblingNodes.length != self.depth) {
+            revert WrongTreeDepth();
+        }
+
+        uint256 index = indexOf(self, oldLeaf);
+        uint256 node = newLeaf;
+        uint256 oldRoot = oldLeaf;
+
+        for (uint256 i = 0; i < self.depth; ) {
+            if (siblingNodes[i] >= SNARK_SCALAR_FIELD) {
+                revert LeafGreaterThanSnarkScalarField();
+            }
+
+            if (siblingNodes[i] == self.rightmostNodes[i]) {
+                self.rightmostNodes[i] = node;
+            }
+
+            if (index % self.arity != 0) {
+                node = PoseidonT3.hash([siblingNodes[i], node]);
+                oldRoot = PoseidonT3.hash([siblingNodes[i], oldRoot]);
+            }
+
+            unchecked {
+                index /= self.arity;
+                ++i;
+            }
+        }
+
+        if (oldRoot != root(self)) {
+            revert WrongSiblingNodes();
+        }
+
+        self.rightmostNodes[self.depth] = node;
+        self.leaves[newLeaf] = self.leaves[oldLeaf];
+        self.leaves[oldLeaf] = 0;
+
+        return node;
+    }
+
+    function remove(
+        MerkleTreeData storage self,
+        uint256 oldLeaf,
+        uint256[] calldata siblingNodes
+    ) public returns (uint256) {
+        return update(self, oldLeaf, 0, siblingNodes);
     }
 
     function has(MerkleTreeData storage self, uint256 leaf) public view returns (bool) {
@@ -89,6 +151,6 @@ library MerkleTree {
     }
 
     function root(MerkleTreeData storage self) public view returns (uint256) {
-        return self.siblings[self.depth];
+        return self.rightmostNodes[self.depth];
     }
 }
