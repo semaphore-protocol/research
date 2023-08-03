@@ -134,7 +134,6 @@ export default class IncrementalMerkleTree {
         }
 
         const siblings: Node[] = []
-        const path: number[] = []
 
         for (let level = 0; level < this.depth; level += 1) {
             const isRightNode = index & 1
@@ -142,30 +141,29 @@ export default class IncrementalMerkleTree {
             const sibling = this._nodes[level][siblingIndex]
 
             if (sibling) {
-                path.push(isRightNode)
                 siblings.push(sibling)
             }
 
             index >>= 1
         }
 
-        return { root: this.root, leaf, path: Number.parseInt(path.reverse().join(""), 2), siblings }
+        return { root: this.root, leaf, index, siblings }
     }
 
     verifyProof(proof: MerkleProof): boolean {
         checkParameter(proof, "proof", "object")
 
-        const { root, leaf, siblings, path } = proof
+        const { root, leaf, siblings, index } = proof
 
         checkParameter(proof.root, "proof.root", "number", "string", "bigint")
         checkParameter(proof.leaf, "proof.leaf", "number", "string", "bigint")
         checkParameter(proof.siblings, "proof.siblings", "object")
-        checkParameter(proof.path, "proof.path", "number")
+        checkParameter(proof.index, "proof.index", "number")
 
         let node = leaf
 
         for (let i = 0; i < siblings.length; i += 1) {
-            if (path & 1) {
+            if ((index >> i) & 1) {
                 node = this._hash(siblings[i], node)
             } else {
                 node = this._hash(node, siblings[i])

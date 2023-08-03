@@ -5,6 +5,6 @@ export type HashFunction = (a: Node, b: Node) => Node
 export type MerkleProof = {
     root: Node
     leaf: Node
-    path: number
+    index: number
     siblings: Node[]
 }
