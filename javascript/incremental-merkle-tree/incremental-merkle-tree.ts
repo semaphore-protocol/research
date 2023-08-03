@@ -91,6 +91,17 @@ export default class IncrementalMerkleTree {
     }
 
     /**
+     * Returns true if the leaf exists and false otherwise
+     * @param leaf Tree leaf.
+     * @returns true or false.
+     */
+    public has(leaf: Node): boolean {
+        checkParameter(leaf, "leaf", "number", "string", "bigint")
+
+        return this._nodes[0].includes(leaf)
+    }
+
+    /**
      * Inserts a new leaf in the tree.
      * @param leaf New leaf.
      */
