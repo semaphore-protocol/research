@@ -42,8 +42,23 @@ export default async function run() {
         b.add(...fn2),
         b.cycle(),
         b.complete(),
-        b.save({ folder: "benchmarks/results", file: name, version: "1.0.0", details: true }),
-        b.save({ folder: "benchmarks/results", file: name, format: "chart.html", details: true }),
-        b.save({ folder: "benchmarks/results", file: name, format: "table.html", details: true })
+        b.save({
+            folder: "benchmarks/results",
+            file: name,
+            version: "1.0.0",
+            details: true
+        }),
+        b.save({
+            folder: "benchmarks/results",
+            file: name,
+            format: "chart.html",
+            details: true
+        }),
+        b.save({
+            folder: "benchmarks/results",
+            file: name,
+            format: "table.html",
+            details: true
+        })
     )
 }
