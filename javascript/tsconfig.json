@@ -17,5 +17,6 @@
             "target": "esnext",
             "module": "commonjs"
         }
-    }
+    },
+    "include": ["src", "benchmarks"]
 }

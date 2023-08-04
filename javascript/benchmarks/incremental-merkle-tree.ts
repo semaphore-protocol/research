@@ -1,6 +1,6 @@
 import { poseidon2 } from "poseidon-lite/poseidon2"
 import { MerkleProof, IncrementalMerkleTree as OIncrementalMerkleTree } from "@zk-kit/incremental-merkle-tree"
-import { IncrementalMerkleTree } from "../incremental-merkle-tree"
+import { IncrementalMerkleTree } from "../src"
 import { FN } from "./types"
 import generateBenchmarks from "./benchmark"
 
