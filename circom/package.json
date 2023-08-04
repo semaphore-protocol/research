@@ -3,7 +3,7 @@
     "type": "module",
     "private": true,
     "scripts": {
-        "start": "yarn run:ceremony",
+        "start": "node scripts/generate-proof.js",
         "run:ceremony": "bash scripts/run-ceremony.sh semaphore-v4",
         "compile:v4": "circom semaphore-v4/index.circom --r1cs",
         "compile:v3": "circom semaphore-v3/index.circom --r1cs",
@@ -13,6 +13,7 @@
         "circomlib": "^2.0.2"
     },
     "devDependencies": {
+        "@semaphore-research/merkle-tree": "0.1.0",
         "poseidon-lite": "^0.2.0",
         "snarkjs": "^0.7.0"
     }

@@ -15,6 +15,13 @@
     fastfile "0.0.20"
     ffjavascript "^0.2.48"
 
+"@semaphore-research/merkle-tree@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@semaphore-research/merkle-tree/-/merkle-tree-0.1.0.tgz#7b9f3cca1bb93120cbfb7cb2b343a02cc1695e43"
+  integrity sha512-D4IarB59ysaxoK2DbG9xs9/MW0f0+2m3dg9WNoYXrkwBhq16O+/EXz81MaUob55VZaQOkxFFXOrpEBOZ0EOcpA==
+  dependencies:
+    poseidon-lite "^0.2.0"
+
 ansi-styles@^4.1.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-4.3.0.tgz#edd803628ae71c04c85ae7a0906edad34b648937"
