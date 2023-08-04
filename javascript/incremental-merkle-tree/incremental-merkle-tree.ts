@@ -215,7 +215,7 @@ export default class IncrementalMerkleTree {
             const siblingIndex = isRightNode ? index - 1 : index + 1
             const sibling = this._nodes[level][siblingIndex]
 
-            if (sibling) {
+            if (sibling !== undefined) {
                 path.push(isRightNode)
                 siblings.push(sibling)
             }
