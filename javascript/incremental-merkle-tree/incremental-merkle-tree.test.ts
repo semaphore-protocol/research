@@ -25,7 +25,6 @@ describe("Incremental Merkle Tree", () => {
     })
     it("Should get the leaves of the Tree", () => {
         const leaves = mt.leaves
-        console.log(leaves)
         expect(leaves).toStrictEqual([1, 5, 10, 3])
     })
     it("Should get the size of the Tree", () => {
@@ -62,13 +61,14 @@ describe("Incremental Merkle Tree", () => {
             expect(mt.root).toBe(-13)
         })
     })
-    // it("Should generate a Merkle Proof", () => {
-    //     merkleProof = mt.generateMerkleProof(7)
-    //     console.log("Merkle Proof", merkleProof)
-    //     expect(merkleProof.leaf).toBe(7)
-    // })
-    // it("Should verify a Merkle Proof", () => {
-    //     const response = mt.verifyProof(merkleProof)
-    //     expect(response).toBe(true)
-    // })
+    it("Should generate a Merkle Proof", () => {
+        merkleProof = mt.generateMerkleProof(10)
+        console.log(mt.leaves)
+        console.log("Merkle Proof", merkleProof)
+        expect(merkleProof.leaf).toBe(10)
+    })
+    it("Should verify a Merkle Proof", () => {
+        const response = mt.verifyProof(merkleProof)
+        expect(response).toBe(true)
+    })
 })
