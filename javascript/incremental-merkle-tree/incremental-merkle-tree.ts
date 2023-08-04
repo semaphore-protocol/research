@@ -146,9 +146,6 @@ export default class IncrementalMerkleTree {
     }
 
     private _update(index: number, value: Node) {
-        checkParameter(index, "index", "number")
-        checkParameter(value, "value", "number", "string", "bigint")
-
         let node = value
         let position = index
 
