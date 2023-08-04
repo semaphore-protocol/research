@@ -15,6 +15,12 @@ export default class IncrementalMerkleTree {
         checkParameter(hash, "hash", "function")
         checkParameter(leaves, "leaves", "object")
 
+        leaves.forEach((leaf) => {
+            if (leaf === 0) {
+                throw new Error("The value cannot be zero")
+            }
+        })
+
         // Initialize the attributes.
         this._nodes = [[]]
         this._hash = hash
@@ -108,6 +114,10 @@ export default class IncrementalMerkleTree {
     public insert(leaf: Node) {
         checkParameter(leaf, "leaf", "number", "string", "bigint")
 
+        if (leaf === 0) {
+            throw new Error("The leaf cannot be zero")
+        }
+
         // It calculates the next depth.
         if (this.depth < Math.ceil(Math.log2(this.size + 1))) {
             this._nodes.push([])
@@ -135,7 +145,60 @@ export default class IncrementalMerkleTree {
         this._nodes[this.depth] = [node]
     }
 
-    generateMerkleProof(leaf: Node): MerkleProof {
+    private _update(index: number, value: Node) {
+        checkParameter(index, "index", "number")
+        checkParameter(value, "value", "number", "string", "bigint")
+
+        let node = value
+        let position = index
+
+        for (let level = 0; level < this.depth; level += 1) {
+            this._nodes[level][position] = node
+
+            // if pos is a right node position
+            if (position & 1) {
+                node = this._hash(this._nodes[level][position - 1], node)
+            } else {
+                if (position + 1 < this._nodes[level].length) {
+                    node = this._hash(node, this._nodes[level][position + 1])
+                }
+            }
+
+            position >>= 1
+        }
+
+        // Finally, it stores the new root.
+        this._nodes[this.depth] = [node]
+    }
+
+    /**
+     * Updates a leaf in the tree.
+     * @param index Index of the leaf to be updated.
+     * @param newLeaf New leaf value.
+     */
+    public update(index: number, newLeaf: Node) {
+        checkParameter(index, "index", "number")
+        checkParameter(newLeaf, "newLeaf", "number", "string", "bigint")
+
+        if (newLeaf === 0) {
+            throw new Error("The value cannot be zero")
+        }
+
+        this._update(index, newLeaf)
+    }
+
+    /**
+     * Deletes a leaf from the tree. It does not remove the leaf from
+     * the data structure. It sets the leaf to be deleted to zero.
+     * @param index Index of the leaf to be deleted.
+     */
+    public delete(index: number) {
+        checkParameter(index, "index", "number")
+
+        this._update(index, 0)
+    }
+
+    public generateMerkleProof(leaf: Node): MerkleProof {
         checkParameter(leaf, "leaf", "number", "string", "bigint")
 
         let index = this.indexOf(leaf)
@@ -161,7 +224,7 @@ export default class IncrementalMerkleTree {
         return { root: this.root, leaf, index, siblings }
     }
 
-    verifyProof(proof: MerkleProof): boolean {
+    public verifyProof(proof: MerkleProof): boolean {
         checkParameter(proof, "proof", "object")
 
         const { root, leaf, siblings, index } = proof

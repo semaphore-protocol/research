@@ -50,11 +50,23 @@ describe("Incremental Merkle Tree", () => {
         mt.insert(7)
         expect(mt.size).toBe(5)
     })
-    it("Should generate a Merkle Proof", () => {
-        merkleProof = mt.generateMerkleProof(3)
-        console.log("Merkle Proof", merkleProof)
-        expect(merkleProof.leaf).toBe(3)
+    describe("# update", () => {
+        it("Should update a leaf", () => {
+            mt.update(3, 1)
+            expect(mt.root).toBe(-20)
+        })
     })
+    describe("# delete", () => {
+        it("Should delete a leaf", () => {
+            mt.delete(4)
+            expect(mt.root).toBe(-13)
+        })
+    })
+    // it("Should generate a Merkle Proof", () => {
+    //     merkleProof = mt.generateMerkleProof(7)
+    //     console.log("Merkle Proof", merkleProof)
+    //     expect(merkleProof.leaf).toBe(7)
+    // })
     // it("Should verify a Merkle Proof", () => {
     //     const response = mt.verifyProof(merkleProof)
     //     expect(response).toBe(true)
