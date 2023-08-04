@@ -5,13 +5,21 @@ import { createTree } from "./utils"
 
 describe("BinaryMerkleTreeTest", () => {
     let binaryMerkleTree: Contract
+    let binaryMerkleTreeLib: Contract
     let merkleTree: Contract
 
     const treeId = ethers.utils.formatBytes32String("treeId")
 
     before(async () => {
-        binaryMerkleTree = await run("deploy:binary-merkle-tree-test", { logs: false })
-        merkleTree = await run("deploy:merkle-tree-test", { logs: false })
+        const { contract: _binaryMerkleTree, library: _binaryMerkleTreeLib } = await run(
+            "deploy:binary-merkle-tree-test",
+            { logs: false }
+        )
+        const { contract: _merkleTree } = await run("deploy:merkle-tree-test", { logs: false })
+
+        binaryMerkleTree = _binaryMerkleTree
+        binaryMerkleTreeLib = _binaryMerkleTreeLib
+        merkleTree = _merkleTree
     })
 
     it("Should not insert a leaf if its value is > SNARK_SCALAR_FIELD", async () => {
@@ -19,7 +27,7 @@ describe("BinaryMerkleTreeTest", () => {
 
         const transaction = binaryMerkleTree.insertLeaf(treeId, leaf)
 
-        await expect(transaction).to.be.revertedWith("MerkleTree: leaf must be < SNARK_SCALAR_FIELD")
+        await expect(transaction).to.be.revertedWithCustomError(binaryMerkleTreeLib, "LeafGreaterThanSnarkScalarField")
     })
 
     it("Should insert a leaf in a binary tree", async () => {

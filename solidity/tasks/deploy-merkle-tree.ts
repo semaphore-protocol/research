@@ -1,9 +1,8 @@
-import { Contract } from "ethers"
 import { task, types } from "hardhat/config"
 
 task("deploy:merkle-tree-test", "Deploy a MerkleTreeTest contract")
     .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
-    .setAction(async ({ logs }, { ethers }): Promise<Contract> => {
+    .setAction(async ({ logs }, { ethers }): Promise<any> => {
         const PoseidonLibFactory = await ethers.getContractFactory("PoseidonT3")
         const poseidonLib = await PoseidonLibFactory.deploy()
 
@@ -40,5 +39,8 @@ task("deploy:merkle-tree-test", "Deploy a MerkleTreeTest contract")
             console.info(`Test contract has been deployed to: ${contract.address}`)
         }
 
-        return contract
+        return {
+            library: merkleTreeLib,
+            contract
+        }
     })
