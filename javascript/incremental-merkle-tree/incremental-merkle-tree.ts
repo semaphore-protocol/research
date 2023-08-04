@@ -201,14 +201,14 @@ export default class IncrementalMerkleTree {
     public generateMerkleProof(leaf: Node): MerkleProof {
         checkParameter(leaf, "leaf", "number", "string", "bigint")
 
-        let index
-        const indexLeaf = (index = this.indexOf(leaf))
+        let index = this.indexOf(leaf)
 
         if (index === -1) {
             throw new Error("The leaf does not exist in this tree")
         }
 
         const siblings: Node[] = []
+        const path: number[] = []
 
         for (let level = 0; level < this.depth; level += 1) {
             const isRightNode = index & 1
@@ -216,13 +216,14 @@ export default class IncrementalMerkleTree {
             const sibling = this._nodes[level][siblingIndex]
 
             if (sibling) {
+                path.push(isRightNode)
                 siblings.push(sibling)
             }
 
             index >>= 1
         }
 
-        return { root: this.root, leaf, index: indexLeaf, siblings }
+        return { root: this.root, leaf, index: Number.parseInt(path.reverse().join(""), 2), siblings }
     }
 
     public verifyProof(proof: MerkleProof): boolean {
@@ -233,7 +234,7 @@ export default class IncrementalMerkleTree {
         checkParameter(proof.root, "proof.root", "number", "string", "bigint")
         checkParameter(proof.leaf, "proof.leaf", "number", "string", "bigint")
         checkParameter(proof.siblings, "proof.siblings", "object")
-        checkParameter(proof.index, "proof.index", "number")
+        checkParameter(proof.index, "proof.path", "number")
 
         let node = leaf
 
