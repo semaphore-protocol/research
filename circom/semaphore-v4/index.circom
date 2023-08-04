@@ -6,15 +6,15 @@ include "../merkle-tree/index.circom";
 template Semaphore(MAX_DEPTH) {
     signal input identitySecret;
     signal input treeDepth, treeIndices[MAX_DEPTH], treeSiblings[MAX_DEPTH];
-    signal input message;
-    signal input topic;
+    signal input signalHash;
+    signal input scope;
 
-    signal output treeRoot, nullifier;
+    signal output treeRoot, nullifierHash;
 
     var leaf = Poseidon(1)([identitySecret]);
 
     treeRoot <== CalculateMerkleRoot(MAX_DEPTH)(leaf, treeDepth, treeIndices, treeSiblings);
-    nullifier <== Poseidon(2)([topic, identitySecret]);
+    nullifierHash <== Poseidon(2)([scope, identitySecret]);
 }
 
-component main {public [message, topic]} = Semaphore(30);
+component main {public [signalHash, scope]} = Semaphore(10);

@@ -1,13 +1,19 @@
 {
     "name": "circuits",
+    "type": "module",
     "private": true,
     "scripts": {
-        "start": "yarn run:v4 && yarn run:v3 && yarn run:preimage-proof",
-        "run:v4": "./circom semaphore-v4/index.circom --r1cs",
-        "run:v3": "./circom semaphore-v3/index.circom --r1cs",
-        "run:preimage-proof": "./circom preimage-proof/index.circom --r1cs"
+        "start": "yarn run:ceremony",
+        "run:ceremony": "bash scripts/run-ceremony.sh semaphore-v4",
+        "compile:v4": "circom semaphore-v4/index.circom --r1cs",
+        "compile:v3": "circom semaphore-v3/index.circom --r1cs",
+        "compile:preimage-proof": "circom preimage-proof/index.circom --r1cs"
     },
     "dependencies": {
         "circomlib": "^2.0.2"
+    },
+    "devDependencies": {
+        "poseidon-lite": "^0.2.0",
+        "snarkjs": "^0.7.0"
     }
 }
