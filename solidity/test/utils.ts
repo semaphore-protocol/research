@@ -1,4 +1,4 @@
-import { IncrementalMerkleTree } from "../../javascript/incremental-merkle-tree"
+import { IncrementalMerkleTree } from "@semaphore-research/merkle-tree"
 import { poseidon2 } from "poseidon-lite"
 
 export function createTree(numberOfNodes = 0): IncrementalMerkleTree {

@@ -35,6 +35,7 @@
     "typescript": "^5.1.3"
   },
   "dependencies": {
+    "@semaphore-research/merkle-tree": "^0.1.0",
     "poseidon-solidity": "^0.0.5"
   }
 }
