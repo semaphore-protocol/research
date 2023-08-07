@@ -3,8 +3,7 @@ pragma solidity ^0.8.4;
 
 import {PoseidonT3} from "poseidon-solidity/PoseidonT3.sol";
 
-uint256 constant SNARK_SCALAR_FIELD =
-        21888242871839275222246405745257275088548364400416034343698204186575808495617;
+uint256 constant SNARK_SCALAR_FIELD = 21888242871839275222246405745257275088548364400416034343698204186575808495617;
 
 struct MerkleTreeData {
     uint256 arity;
@@ -28,10 +27,7 @@ library MerkleTree {
     /// @dev Initializes a tree with a specific arity.
     /// @param self: Tree data.
     /// @param arity: Tree arity.
-    function init(
-        MerkleTreeData storage self,
-        uint256 arity
-    ) public {
+    function init(MerkleTreeData storage self, uint256 arity) public {
         if (arity == 0) {
             revert TreeArityCannotBeZero();
         } else if (self.arity != 0) {
@@ -44,7 +40,10 @@ library MerkleTree {
     /// @dev Inserts a new leaf in the tree.
     /// @param self: Tree data.
     /// @param leaf: Leaf to be inserted.
-    function insert(MerkleTreeData storage self, uint256 leaf) public returns (uint256) {
+    function insert(
+        MerkleTreeData storage self,
+        uint256 leaf
+    ) public returns (uint256) {
         if (self.arity == 0) {
             revert TreeNotInitialized();
         } else if (leaf >= SNARK_SCALAR_FIELD) {
@@ -55,7 +54,7 @@ library MerkleTree {
             revert LeafAlreadyExists();
         }
 
-        while (self.arity**self.depth < self.size + 1) {
+        while (self.arity ** self.depth < self.size + 1) {
             self.depth += 1;
         }
 
@@ -142,11 +141,17 @@ library MerkleTree {
         return update(self, oldLeaf, 0, siblingNodes);
     }
 
-    function has(MerkleTreeData storage self, uint256 leaf) public view returns (bool) {
+    function has(
+        MerkleTreeData storage self,
+        uint256 leaf
+    ) public view returns (bool) {
         return self.leaves[leaf] != 0;
     }
 
-    function indexOf(MerkleTreeData storage self, uint256 leaf) public view returns (uint256) {
+    function indexOf(
+        MerkleTreeData storage self,
+        uint256 leaf
+    ) public view returns (uint256) {
         return self.leaves[leaf] - 1;
     }
 
