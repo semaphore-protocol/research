@@ -18,4 +18,41 @@ contract BinaryMerkleTreeTest {
 
         emit LeafInserted(_treeId, _leaf, root);
     }
+
+    function updateLeaf(
+        bytes32 _treeId,
+        uint256 _oldLeaf,
+        uint256 _newLeaf,
+        uint256[] calldata _siblingNodes
+    ) external {
+        uint256 root = trees[_treeId].update(_oldLeaf, _newLeaf, _siblingNodes);
+        emit LeafUpdated(_treeId, _newLeaf, root);
+    }
+
+    function removeLeaf(
+        bytes32 _treeId,
+        uint256 _leaf,
+        uint256[] calldata _siblingNodes
+    ) external {
+        uint256 root = trees[_treeId].remove(_leaf, _siblingNodes);
+        emit LeafRemoved(_treeId, _leaf, root);
+    }
+
+    function hasLeaf(
+        bytes32 _treeId,
+        uint256 _leaf
+    ) external view returns (bool) {
+        return trees[_treeId].has(_leaf);
+    }
+
+    function indexOfLeaf(
+        bytes32 _treeId,
+        uint256 _leaf
+    ) external view returns (uint256) {
+        return trees[_treeId].indexOf(_leaf);
+    }
+
+    function rootTree(bytes32 _treeId) public view returns (uint256) {
+        return trees[_treeId].root();
+    }
 }
