@@ -74,7 +74,7 @@ describe("BinaryMerkleTreeTest", () => {
         "LeafDoesNotExist"
       )
     })
-    it.only("Should update a leaf in the tree", async () => {
+    it("Should update a leaf in the tree", async () => {
       const treeId = ethers.utils.formatBytes32String("treeUpdate")
       const numberOfNodes = 3
       const tree = createTree(numberOfNodes)
@@ -82,7 +82,7 @@ describe("BinaryMerkleTreeTest", () => {
       const leaf = BigInt(1234)
 
       tree.update(1, leaf)
-      const merkleProof = tree.generateMerkleProof(leaf)
+      const merkleProof = tree.generateProof(1)
 
       for (let i = 0; i < numberOfNodes; i += 1) {
         await binaryMerkleTree.insertLeaf(treeId, BigInt(i + 1))
@@ -111,7 +111,7 @@ describe("BinaryMerkleTreeTest", () => {
 
       tree.delete(1)
 
-      const merkleProof = tree.generateMerkleProof(0)
+      const merkleProof = tree.generateProof(1)
 
       for (let i = 0; i < numberOfNodes; i += 1) {
         await binaryMerkleTree.insertLeaf(treeId, BigInt(i + 1))

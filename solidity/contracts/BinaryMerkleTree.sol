@@ -89,6 +89,9 @@ library BinaryMerkleTree {
             if ((index >> i) & 1 != 0) {
                 node = PoseidonT3.hash([siblingNodes[i], node]);
                 oldRoot = PoseidonT3.hash([siblingNodes[i], oldRoot]);
+            } else {
+                node = PoseidonT3.hash([node, siblingNodes[i]]);
+                oldRoot = PoseidonT3.hash([oldRoot, siblingNodes[i]]);
             }
 
             unchecked {
