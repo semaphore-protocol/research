@@ -15,6 +15,9 @@ template Semaphore(MAX_DEPTH) {
 
     treeRoot <== CalculateMerkleRoot(MAX_DEPTH)(leaf, treeDepth, treeIndices, treeSiblings);
     nullifierHash <== Poseidon(2)([scope, identitySecret]);
+
+    // Dummy constraint to prevent compiler from optimizing it.
+    signal signalHashSquared <== signalHash * signalHash;
 }
 
 component main {public [signalHash, scope]} = Semaphore(10);

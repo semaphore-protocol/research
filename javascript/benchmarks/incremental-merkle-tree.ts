@@ -96,7 +96,7 @@ export default async function run() {
     const fn9: FN = [
         `New IncrementalMerkleTree - generate merkle proof`,
         () => {
-            proofNewIMT = tree1.generateMerkleProof(1)
+            proofNewIMT = tree1.generateProof(1)
         }
     ]
 
