@@ -192,29 +192,6 @@ export default class IncrementalMerkleTree {
         }
     }
 
-    private _update(index: number, value: Node) {
-        let node = value
-        let position = index
-
-        for (let level = 0; level < this.depth; level += 1) {
-            this._nodes[level][position] = node
-
-            // if pos is a right node position
-            if (position & 1) {
-                node = this._hash(this._nodes[level][position - 1], node)
-            } else {
-                if (position + 1 < this._nodes[level].length) {
-                    node = this._hash(node, this._nodes[level][position + 1])
-                }
-            }
-
-            position >>= 1
-        }
-
-        // Finally, it stores the new root.
-        this._nodes[this.depth] = [node]
-    }
-
     /**
      * Updates a leaf in the tree.
      * @param index Index of the leaf to be updated.
