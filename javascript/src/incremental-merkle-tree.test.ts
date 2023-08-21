@@ -45,9 +45,11 @@ describe("Incremental Merkle Tree", () => {
             expect(isLeaf).toBe(false)
         })
     })
-    it("Should add a new leaf", () => {
-        mt.insert(7)
-        expect(mt.size).toBe(5)
+    describe("# insert", () => {
+        it("Should add a new leaf", () => {
+            mt.insert(7)
+            expect(mt.size).toBe(5)
+        })
     })
     describe("# update", () => {
         it("Should update a leaf", () => {
@@ -70,5 +72,12 @@ describe("Incremental Merkle Tree", () => {
     it("Should verify a Merkle Proof", () => {
         const response = mt.verifyProof(merkleProof)
         expect(response).toBe(true)
+    })
+    describe("# insertMany", () => {
+        it("Should insert multiple leaves", () => {
+            mt.insertMany([4, 9, 20, 30])
+            console.log(mt)
+            expect(mt.size).toBe(9)
+        })
     })
 })
