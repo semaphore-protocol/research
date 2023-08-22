@@ -147,9 +147,9 @@ export default async function run() {
         }
     ]
 
-    generateBenchmarks(fn13, fn14, name, "insertMany")
+    generateBenchmarks(fn13, fn14, name, "insertManyWithInsert")
 
-    // insert Batch Same New Tree
+    // insert Many with the insertMany function
 
     const fn15: FN = [
         `New IncrementalMerkleTree - insert multiple leaves using insertMany function`,
@@ -167,5 +167,5 @@ export default async function run() {
         }
     ]
 
-    generateBenchmarks(fn15, fn16, name, "insertManyNewIMT")
+    generateBenchmarks(fn15, fn16, name, "insertManyWithInsertMany")
 }
