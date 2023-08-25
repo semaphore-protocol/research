@@ -126,4 +126,46 @@ export default async function run() {
     ]
 
     generateBenchmarks(fn11, fn12, name, "verifyProof")
+
+    // insert Many
+
+    const fn13: FN = [
+        `New IncrementalMerkleTree - insert multiple leaves using insert function`,
+        () => {
+            for (let i = 300; i < 310; i += 1) {
+                tree1.insert(i)
+            }
+        }
+    ]
+
+    const fn14: FN = [
+        `Old IncrementalMerkleTree - insert multiple leaves using insert function`,
+        () => {
+            for (let i = 300; i < 310; i += 1) {
+                tree2.insert(i)
+            }
+        }
+    ]
+
+    generateBenchmarks(fn13, fn14, name, "insertManyWithInsert")
+
+    // insert Many with the insertMany function
+
+    const fn15: FN = [
+        `New IncrementalMerkleTree - insert multiple leaves using insertMany function`,
+        () => {
+            tree1.insertMany([500, 501, 502, 503, 504, 505, 506, 507, 508, 509])
+        }
+    ]
+
+    const fn16: FN = [
+        `Old IncrementalMerkleTree - insert multiple leaves using insert function`,
+        () => {
+            for (let i = 500; i < 510; i += 1) {
+                tree2.insert(i)
+            }
+        }
+    ]
+
+    generateBenchmarks(fn15, fn16, name, "insertManyWithInsertMany")
 }

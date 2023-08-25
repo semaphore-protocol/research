@@ -103,4 +103,11 @@ describe("Incremental Merkle Tree", () => {
             expect(response).toBe(true)
         })
     })
+    describe("# insertMany", () => {
+        it("Should insert multiple leaves", () => {
+            tree.insertMany([4, 9, 20, 30])
+            console.log(tree)
+            expect(tree.size).toBe(9)
+        })
+    })
 })

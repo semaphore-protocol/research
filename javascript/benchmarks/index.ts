@@ -1,4 +1,5 @@
 import runIncrementalMerkleTree from "./incremental-merkle-tree"
+import runBatchInsertionNewIMT from "./batchInsertion"
 
 const [benchmark] = process.argv.slice(2)
 
@@ -7,6 +8,9 @@ const [benchmark] = process.argv.slice(2)
 switch (benchmark) {
     case "incremental-merkle-tree":
         runIncrementalMerkleTree()
+        break
+    case "batch-insertion":
+        runBatchInsertionNewIMT()
         break
     default:
         runIncrementalMerkleTree()

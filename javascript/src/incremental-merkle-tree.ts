@@ -13,13 +13,6 @@ export default class IncrementalMerkleTree {
      */
     constructor(hash: HashFunction, leaves: Node[] = []) {
         checkParameter(hash, "hash", "function")
-        checkParameter(leaves, "leaves", "object")
-
-        leaves.forEach((leaf) => {
-            if (leaf === 0) {
-                throw new Error("The value cannot be zero")
-            }
-        })
 
         // Initialize the attributes.
         this._nodes = [[]]
@@ -27,29 +20,7 @@ export default class IncrementalMerkleTree {
 
         // It initializes the tree with a list of leaves if there are any.
         if (leaves.length > 0) {
-            // It calculates the depth based on the number of leaves.
-            const depth = Math.ceil(Math.log2(leaves.length))
-
-            this._nodes[0] = leaves
-
-            for (let level = 0; level < depth; level += 1) {
-                this._nodes[level + 1] = []
-
-                for (let index = 0; index < Math.ceil(this._nodes[level].length / 2); index += 1) {
-                    let parentNode: Node
-
-                    const rightNode = this._nodes[level][index * 2 + 1]
-                    const leftNode = this._nodes[level][index * 2]
-
-                    if (rightNode) {
-                        parentNode = hash(leftNode, rightNode)
-                    } else {
-                        parentNode = leftNode
-                    }
-
-                    this._nodes[level + 1][index] = parentNode
-                }
-            }
+            this.insertMany(leaves)
         }
     }
 
@@ -143,6 +114,51 @@ export default class IncrementalMerkleTree {
 
         // Finally, it stores the new root.
         this._nodes[this.depth] = [node]
+    }
+
+    public insertMany(leaves: Node[]) {
+        checkParameter(leaves, "leaves", "object")
+
+        if (leaves.length <= 0) {
+            throw new Error("There are not leaves")
+        }
+
+        leaves.forEach((leaf: Node) => {
+            if (leaf === 0) {
+                throw new Error("The value cannot be zero")
+            }
+        })
+
+        const pos = this.size
+
+        this._nodes[0].push(...leaves)
+
+        // It calculates the depth based on the number of leaves.
+        const depth = Math.ceil(Math.log2(this.size))
+
+        const newLevels = depth - this.depth
+
+        for (let i = 0; i < newLevels; i += 1) {
+            this._nodes.push([])
+        }
+
+        for (let level = 0; level < depth; level += 1) {
+            const len = Math.ceil(this._nodes[level].length / 2)
+            for (let index = pos >> (level + 1); index < len; index += 1) {
+                let parentNode: Node
+
+                const rightNode = this._nodes[level][index * 2 + 1]
+                const leftNode = this._nodes[level][index * 2]
+
+                if (rightNode) {
+                    parentNode = this._hash(leftNode, rightNode)
+                } else {
+                    parentNode = leftNode
+                }
+
+                this._nodes[level + 1][index] = parentNode
+            }
+        }
     }
 
     /**
