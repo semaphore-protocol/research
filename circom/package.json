@@ -13,7 +13,10 @@
         "circomlib": "^2.0.2"
     },
     "devDependencies": {
-        "@semaphore-research/merkle-tree": "0.2.0",
+        "@semaphore-protocol/group": "^3.11.0",
+        "@semaphore-protocol/identity": "^3.11.0",
+        "@semaphore-protocol/proof": "^3.11.0",
+        "@semaphore-research/merkle-tree": "0.3.0",
         "poseidon-lite": "^0.2.0",
         "snarkjs": "^0.7.0"
     }

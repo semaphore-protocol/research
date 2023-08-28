@@ -20,4 +20,4 @@ template Semaphore(MAX_DEPTH) {
     signal signalHashSquared <== signalHash * signalHash;
 }
 
-component main {public [signalHash, scope]} = Semaphore(10);
+component main {public [signalHash, scope]} = Semaphore(16);

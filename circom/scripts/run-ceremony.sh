@@ -34,3 +34,7 @@ snarkjs zkey contribute build/index_0000.zkey build/index_final.zkey --name="1st
 echo "----- Export the verification key -----"
 # Export the verification key.
 snarkjs zkey export verificationkey build/index_final.zkey build/verification_key.json
+
+# Download the Semaphore zkey/wasm files.
+wget -P ./build https://www.trusted-setup-pse.org/semaphore/16/semaphore.zkey
+wget -P ./build https://www.trusted-setup-pse.org/semaphore/16/semaphore.wasm
