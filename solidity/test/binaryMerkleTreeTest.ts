@@ -270,4 +270,19 @@ describe("BinaryMerkleTreeTest", () => {
       await expect(response).to.be.equal(0)
     })
   })
+
+  describe("# root", () => {
+    it("Should return the tree root", async () => {
+      const treeId = ethers.utils.formatBytes32String("treeRoot")
+      const leaf = BigInt(1)
+
+      const tree = createTree(1)
+
+      await binaryMerkleTree.insertLeaf(treeId, leaf)
+
+      const root = await binaryMerkleTree.rootTree(treeId)
+
+      await expect(tree.root).to.be.equal(root)
+    })
+  })
 })
