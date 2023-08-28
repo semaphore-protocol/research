@@ -41,7 +41,6 @@
 | This repository is used mainly for code related to specific research issues, such as improvements to protocol, contracts and libraries. |
 | --------------------------------------------------------------------------------------------------------------------------------------- |
 
-
 ## 🛠 Install
 
 Clone this repository:
@@ -53,3 +52,12 @@ git clone https://github.com/semaphore-protocol/research.git
 ## 📜 Usage
 
 The repository currently contains three folders, each targeting one part of the Semaphore protocol (i.e. Circom, Solidity and JavaScript). Please be aware that maintaining this repository is not an active priority. The code is experimental and not well organised.
+
+## Contracts
+
+Gas cost benchmarks for New and Old Incremental Merkle Trees to insert, remove and update a leaf.
+
+|     | Insert   | Remove   | Update   |
+| --- | -------- | -------- | -------- |
+| Old | `791491` | `793419` | `794762` |
+| New | `183647` | `192508` | `192765` |
