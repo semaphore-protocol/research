@@ -39,10 +39,10 @@
 </div>
 
 | This repository is used mainly for code related to specific research issues, such as improvements to protocol, contracts and libraries. It currently contains three main folders, each targeting one part of the Semaphore protocol (i.e. Circom, Solidity and JavaScript). Please be aware that maintaining this repository is not an active priority and the code is experimental. |
-| -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 
 Please, go to the specific folders to know more about Semaphore v4 news:
 
-* Solidity: [`research/solidity`](/solidity)
-* JavaScript: [`research/javascript`](/javascript)
-* Circom: [`research/circom`](/circom)
+- Solidity: [`research/solidity`](/solidity)
+- JavaScript: [`research/javascript`](/javascript)
+- Circom: [`research/circom`](/circom)
