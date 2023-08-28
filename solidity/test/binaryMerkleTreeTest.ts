@@ -31,6 +31,17 @@ describe("BinaryMerkleTreeTest", () => {
       )
     })
 
+    it("Should not insert a leaf if it is 0", async () => {
+      const leaf = 0
+
+      const transaction = binaryMerkleTree.insertLeaf(treeId, leaf)
+
+      await expect(transaction).to.be.revertedWithCustomError(
+        binaryMerkleTreeLib,
+        "LeafCannotBeZero"
+      )
+    })
+
     it("Should insert a leaf in a binary tree", async () => {
       const leaf = BigInt(1)
 
@@ -41,6 +52,17 @@ describe("BinaryMerkleTreeTest", () => {
       await expect(transaction)
         .to.emit(binaryMerkleTree, "LeafInserted")
         .withArgs(treeId, leaf, tree.root)
+    })
+
+    it("Should not insert a leaf if it was already inserted before", async () => {
+      const leaf = BigInt(1)
+
+      const transaction = binaryMerkleTree.insertLeaf(treeId, leaf)
+
+      await expect(transaction).to.be.revertedWithCustomError(
+        binaryMerkleTreeLib,
+        "LeafAlreadyExists"
+      )
     })
 
     it("Should insert 100 leaves in a binary tree", async () => {
@@ -74,6 +96,24 @@ describe("BinaryMerkleTreeTest", () => {
         "LeafDoesNotExist"
       )
     })
+
+    it("Should not update a leaf if its value is > SNARK_SCALAR_FIELD", async () => {
+      const leaf = BigInt(
+        "21888242871839275222246405745257275088548364400416034343698204186575808495618"
+      )
+      const treeId = ethers.utils.formatBytes32String("treeUpdate")
+      const transaction = binaryMerkleTree.updateLeaf(
+        treeId,
+        BigInt(2),
+        leaf,
+        [1, 2, 3, 4]
+      )
+      await expect(transaction).to.be.revertedWithCustomError(
+        binaryMerkleTreeLib,
+        "LeafGreaterThanSnarkScalarField"
+      )
+    })
+
     it("Should update a leaf in the tree", async () => {
       const treeId = ethers.utils.formatBytes32String("treeUpdate")
       const numberOfNodes = 3
@@ -98,6 +138,77 @@ describe("BinaryMerkleTreeTest", () => {
       await expect(transaction)
         .to.emit(binaryMerkleTree, "LeafUpdated")
         .withArgs(treeId, leaf, tree.root)
+    })
+
+    it("Should not update a leaf if the depth is wrong", async () => {
+      const treeId = ethers.utils.formatBytes32String("treeUpdate")
+      const numberOfNodes = 10
+      const tree = createTree(numberOfNodes)
+
+      const leaf = BigInt(1234)
+
+      tree.update(1, leaf)
+      const merkleProof = tree.generateProof(1)
+
+      const transaction = binaryMerkleTree.updateLeaf(
+        treeId,
+        BigInt(1),
+        leaf,
+        merkleProof.siblings
+      )
+
+      await expect(transaction).to.be.revertedWithCustomError(
+        binaryMerkleTreeLib,
+        "WrongTreeDepth"
+      )
+    })
+
+    it("Should not update a leaf the value of at least one leaf is > SNARK_SCALAR_FIELD", async () => {
+      const treeId = ethers.utils.formatBytes32String("treeUpdate")
+      const numberOfNodes = 3
+      const tree = createTree(numberOfNodes)
+
+      const leaf = BigInt(1234)
+
+      tree.update(1, leaf)
+      const merkleProof = tree.generateProof(0)
+
+      merkleProof.siblings[0] = BigInt(
+        "21888242871839275222246405745257275088548364400416034343698204186575808495618"
+      )
+      const transaction = binaryMerkleTree.updateLeaf(
+        treeId,
+        BigInt(1),
+        leaf,
+        merkleProof.siblings
+      )
+
+      await expect(transaction).to.be.revertedWithCustomError(
+        binaryMerkleTreeLib,
+        "LeafGreaterThanSnarkScalarField"
+      )
+    })
+
+    it("Should not update a leaf if the siblings are wrong", async () => {
+      const treeId = ethers.utils.formatBytes32String("treeUpdate")
+      const numberOfNodes = 3
+      const tree = createTree(numberOfNodes)
+
+      const leaf = BigInt(1234)
+
+      const merkleProof = tree.generateProof(0)
+
+      const transaction = binaryMerkleTree.updateLeaf(
+        treeId,
+        BigInt(1),
+        leaf,
+        merkleProof.siblings
+      )
+
+      await expect(transaction).to.be.revertedWithCustomError(
+        binaryMerkleTreeLib,
+        "WrongSiblingNodes"
+      )
     })
   })
 
