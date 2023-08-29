@@ -1,6 +1,6 @@
 {
     "name": "@semaphore-research/merkle-tree",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "Incremental Merkle tree implementation in TypeScript.",
     "license": "MIT",
     "main": "dist/index.node.js",

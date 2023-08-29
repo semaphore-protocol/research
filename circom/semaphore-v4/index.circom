@@ -11,13 +11,13 @@ template Semaphore(MAX_DEPTH) {
 
     signal output treeRoot, nullifierHash;
 
-    var leaf = Poseidon(1)([identitySecret]);
+    var identityCommitment = Poseidon(1)([identitySecret]);
 
-    treeRoot <== CalculateMerkleRoot(MAX_DEPTH)(leaf, treeDepth, treeIndices, treeSiblings);
+    treeRoot <== CalculateMerkleRoot(MAX_DEPTH)(identityCommitment, treeDepth, treeIndices, treeSiblings);
     nullifierHash <== Poseidon(2)([scope, identitySecret]);
 
     // Dummy constraint to prevent compiler from optimizing it.
     signal signalHashSquared <== signalHash * signalHash;
 }
 
-component main {public [signalHash, scope]} = Semaphore(10);
+component main {public [signalHash, scope]} = Semaphore(16);
