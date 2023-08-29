@@ -41,12 +41,8 @@
 | This repository is used mainly for code related to specific research issues, such as improvements to protocol, contracts and libraries. It currently contains three main folders, each targeting one part of the Semaphore protocol (i.e. Circom, Solidity and JavaScript). Please be aware that maintaining this repository is not an active priority and the code is experimental. |
 | -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-## 🛠 Install
+Please, go to the specific folders to know more about Semaphore v4 news:
 
-Clone this repository:
-
-```bash
-git clone https://github.com/semaphore-protocol/research.git
-```
-
-And go to one of the folders mentioned above to find more instractions and information.
+* Solidity: [`research/solidity`](/solidity)
+* JavaScript: [`research/javascript`](/javascript)
+* Circom: [`research/circom`](/circom)
