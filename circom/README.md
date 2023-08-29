@@ -5,7 +5,7 @@
             <source media="(prefers-color-scheme: light)" srcset="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon.svg">
             <img width="40" alt="Semaphore icon." src="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon.svg">
         </picture>
-        Semaphore V4 circuits
+        Semaphore V4 - Circom
     </h1>
 </p>
 
