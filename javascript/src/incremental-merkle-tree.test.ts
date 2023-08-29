@@ -2,13 +2,13 @@ import { poseidon2 } from "poseidon-lite/poseidon2"
 import { IncrementalMerkleTree, MerkleProof, Node } from "."
 
 describe("Incremental Merkle Tree", () => {
+    const hash = (a: Node, b: Node): Node => poseidon2([a, b])
+
     let tree: IncrementalMerkleTree
     let merkleProof: MerkleProof
 
     describe("# new IncrementalMerkleTree", () => {
         it("Should create a new incremental Merkle tree", () => {
-            const hash = (a: Node, b: Node): Node => poseidon2([a, b])
-
             tree = new IncrementalMerkleTree(hash, [1, 5, 10, 3])
 
             expect(tree.size).toBe(4)
@@ -105,9 +105,16 @@ describe("Incremental Merkle Tree", () => {
     })
     describe("# insertMany", () => {
         it("Should insert multiple leaves", () => {
-            tree.insertMany([4, 9, 20, 30])
-            console.log(tree)
-            expect(tree.size).toBe(9)
+            const tree1 = new IncrementalMerkleTree(hash)
+            const tree2 = new IncrementalMerkleTree(hash)
+
+            for (let i = 1; i < 50; i++) {
+                tree1.insert(i)
+            }
+
+            tree2.insertMany(tree1.leaves)
+
+            expect(tree1.root).toBe(tree2.root)
         })
     })
 })
