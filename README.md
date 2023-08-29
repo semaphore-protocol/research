@@ -5,7 +5,7 @@
             <source media="(prefers-color-scheme: light)" srcset="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon.svg">
             <img width="40" alt="Semaphore icon." src="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon.svg">
         </picture>
-        Semaphore research
+        Semaphore v4 research
     </h1>
 </p>
 
@@ -38,9 +38,8 @@
     </h4>
 </div>
 
-| This repository is used mainly for code related to specific research issues, such as improvements to protocol, contracts and libraries. |
-| --------------------------------------------------------------------------------------------------------------------------------------- |
-
+| This repository is used mainly for code related to specific research issues, such as improvements to protocol, contracts and libraries. It currently contains three main folders, each targeting one part of the Semaphore protocol (i.e. Circom, Solidity and JavaScript). Please be aware that maintaining this repository is not an active priority and the code is experimental. |
+| -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 
 ## 🛠 Install
 
@@ -50,6 +49,4 @@ Clone this repository:
 git clone https://github.com/semaphore-protocol/research.git
 ```
 
-## 📜 Usage
-
-The repository currently contains three folders, each targeting one part of the Semaphore protocol (i.e. Circom, Solidity and JavaScript). Please be aware that maintaining this repository is not an active priority. The code is experimental and not well organised.
+And go to one of the folders mentioned above to find more instractions and information.
