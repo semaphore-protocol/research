@@ -5,7 +5,7 @@
             <source media="(prefers-color-scheme: light)" srcset="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon.svg">
             <img width="40" alt="Semaphore icon." src="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon.svg">
         </picture>
-        Semaphore V4 - Javascript
+        Semaphore V4 - JavaScript
     </h1>
 </p>
 
@@ -14,7 +14,7 @@
 Semaphore v4 JS libraries will keep the same interface but they'll probably use an optimized incremental Merkle tree, whose differences with the old version will be described below. The improvements have mainly focused on making on-chain insertions cheaper and are basically two:
 
 * No zero hashes: In the old implementation, if the parent node has 1 child only, it will be calculated as the hash of that child node and a zero hash. The parent node can actually equal the child node itself. This shouldn't affect the properties of the tree and it would need to calculate far fewer hashes.
-* Dynamic depth: In our current implementation, where the tree has a static depth, each insertion needs to update a number of nodes which equals the static depth of the tree. If the tree depth grew with the number of leaves, each insertion would only require updating a number of nodes proportional to the current number of leaves.
+* Dynamic depth: In the current implementation, where the tree has a static depth, each insertion needs to update a number of nodes which equals the static depth of the tree. If the tree depth grew with the number of leaves, each insertion would only require updating a number of nodes proportional to the current number of leaves.
 
 While the first property mostly makes the data structure simpler, the second property allows small groups to save a lot of gas.
 
