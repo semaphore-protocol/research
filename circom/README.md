@@ -11,7 +11,7 @@
 
 ## Changelog
 
-The Semaphore v4 circuit maintain pretty much the same structure as version 3. The main differences are:
+The Semaphore v4 circuit maintains pretty much the same structure as version 3. The main differences are:
 
 * Variable names: The external nullifier is now called "scope".
 * Simplified identity: The two old identity secrets (`trapdoor` and `nullifier`) have been replaced by 1 secret only (`secret`). So `identity commitment = hash(identity secret)`, and `nullifier hash = hash(scope, identity secret)`.
@@ -27,3 +27,12 @@ Once you are in `circom` folder:
 2. Install the NPM dependencies with `yarn`
 3. Run `yarn run:ceremony` to compile the circuit and run a fake trusted-setup for testing
 4. Run `yarn start` to generate and verify Semaphore v3 and v4 proofs and compare them
+
+## Benchmarks
+
+The difference between version 3 and 4 is in this case mainly due to the different version of SnarkJS. Benchmarks were run on a Intel Core i7-1165G7, 16 GB RAM machine.
+
+|                | Generate proof | Verify proof | SnarkJS version | Constraints | Tree depth |
+| -------------- | -------------- | ------------ | ----------------| ----------- | ---------- |
+| Semaphore v3   | `1219ms`       |     `343ms`  | `v0.4.16`       |  `4582`     |  `16`      |
+| Semaphore v4   | `525ms`        |     `139ms`  | `v0.7.0`        |  `4374`     |  `16`      |
