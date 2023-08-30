@@ -3,8 +3,8 @@ import { FN } from "./types"
 
 const path = "benchmarks/results"
 
-export function createSuite(fn1: FN, fn2: FN, name: string, file: string) {
-    b.suite(
+export async function createSuite(fn1: FN, fn2: FN, name: string, file: string) {
+    await b.suite(
         name,
         b.add(...fn1),
         b.add(...fn2),

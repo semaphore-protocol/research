@@ -10,7 +10,7 @@ export default async function run() {
     const tree1 = new IncrementalMerkleTree((a, b) => poseidon2([a, b]))
     const tree2 = new OIncrementalMerkleTree(poseidon2, 20, BigInt(0), 2)
 
-    const numberOfLeaves = 2 ** 12
+    const numberOfLeaves = 2 ** 8
 
     const leaves: any[] = []
 
@@ -18,154 +18,154 @@ export default async function run() {
         leaves.push(i + 1)
     }
 
-    const fn1: FN = [
-        `New IncrementalMerkleTree - insert (${numberOfLeaves} leaves)`,
-        () => {
-            new IncrementalMerkleTree((a, b) => poseidon2([a, b]), leaves)
-        }
-    ]
-
-    const fn2: FN = [
-        `Old IncrementalMerkleTree - insert (${numberOfLeaves} leaves)`,
-        () => {
-            new OIncrementalMerkleTree(poseidon2, 20, BigInt(0), 2, leaves)
-        }
-    ]
-
-    generateBenchmarks(fn1, fn2, name, "createIMT")
-
-    // insert a new leaf
-
-    const fn3: FN = [
-        `New IncrementalMerkleTree - insert one leaf`,
-        () => {
-            tree1.insert(1)
-        }
-    ]
-
-    const fn4: FN = [
-        `Old IncrementalMerkleTree - insert one leaf`,
-        () => {
-            tree2.insert(1)
-        }
-    ]
-
-    generateBenchmarks(fn3, fn4, name, "insert")
-
-    // update one leaf
-
-    const fn5: FN = [
-        `New IncrementalMerkleTree - update one leaf`,
-        () => {
-            tree1.update(0, 2)
-        }
-    ]
-
-    const fn6: FN = [
-        `Old IncrementalMerkleTree - update one leaf`,
-        () => {
-            tree2.update(0, 2)
-        }
-    ]
-
-    generateBenchmarks(fn5, fn6, name, "update")
-
-    // delete one leaf
-
-    const fn7: FN = [
-        `New IncrementalMerkleTree - delete one leaf`,
-        () => {
-            tree1.delete(0)
-        }
-    ]
-
-    const fn8: FN = [
-        `Old IncrementalMerkleTree - delete one leaf`,
-        () => {
-            tree2.delete(0)
-        }
-    ]
-
-    generateBenchmarks(fn7, fn8, name, "delete")
-
-    // generate merkle proof
-
-    let proofNewIMT: any
-    let proofOldIMT: MerkleProof
-
-    const fn9: FN = [
-        `New IncrementalMerkleTree - generate merkle proof`,
-        () => {
-            proofNewIMT = tree1.generateProof(1)
-        }
-    ]
-
-    const fn10: FN = [
-        `Old IncrementalMerkleTree - generate merkle proof`,
-        () => {
-            proofOldIMT = tree2.createProof(1)
-        }
-    ]
-
-    generateBenchmarks(fn9, fn10, name, "generateProof")
-
-    // verify proof
-
-    const fn11: FN = [
-        `New IncrementalMerkleTree - verify merkle proof`,
-        () => {
-            tree1.verifyProof(proofNewIMT)
-        }
-    ]
-
-    const fn12: FN = [
-        `Old IncrementalMerkleTree - verify merkle proof`,
-        () => {
-            tree2.verifyProof(proofOldIMT)
-        }
-    ]
-
-    generateBenchmarks(fn11, fn12, name, "verifyProof")
-
-    // insert Many
-
-    const fn13: FN = [
-        `New IncrementalMerkleTree - insert multiple leaves using insert function`,
-        () => {
-            for (let i = 300; i < 310; i += 1) {
-                tree1.insert(i)
+    {
+        const fn1: FN = [
+            `New IncrementalMerkleTree - Initialize tree with list of leaves (${leaves.length})`,
+            () => {
+                new IncrementalMerkleTree((a, b) => poseidon2([a, b]), leaves)
             }
-        }
-    ]
+        ]
 
-    const fn14: FN = [
-        `Old IncrementalMerkleTree - insert multiple leaves using insert function`,
-        () => {
-            for (let i = 300; i < 310; i += 1) {
-                tree2.insert(i)
+        const fn2: FN = [
+            `Old IncrementalMerkleTree - Initialize tree with list of leaves (${leaves.length})`,
+            () => {
+                new OIncrementalMerkleTree(poseidon2, 20, BigInt(0), 2, leaves)
             }
-        }
-    ]
+        ]
 
-    generateBenchmarks(fn13, fn14, name, "insertManyWithInsert")
+        await generateBenchmarks(fn1, fn2, name, "Create tree")
+    }
 
-    // insert Many with the insertMany function
-
-    const fn15: FN = [
-        `New IncrementalMerkleTree - insert multiple leaves using insertMany function`,
-        () => {
-            tree1.insertMany([500, 501, 502, 503, 504, 505, 506, 507, 508, 509])
-        }
-    ]
-
-    const fn16: FN = [
-        `Old IncrementalMerkleTree - insert multiple leaves using insert function`,
-        () => {
-            for (let i = 500; i < 510; i += 1) {
-                tree2.insert(i)
+    {
+        const fn1: FN = [
+            `New IncrementalMerkleTree - insertMany (${leaves.length})`,
+            () => {
+                tree1.insertMany(leaves)
             }
-        }
-    ]
+        ]
 
-    generateBenchmarks(fn15, fn16, name, "insertManyWithInsertMany")
+        const fn2: FN = [
+            `Old IncrementalMerkleTree - insertMany (${leaves.length})`,
+            () => {
+                for (let i = 0; i < leaves.length; i += 1) {
+                    tree2.insert(leaves[i])
+                }
+            }
+        ]
+
+        await generateBenchmarks(fn1, fn2, name, "insertMany")
+    }
+
+    {
+        const fn1: FN = [
+            `New IncrementalMerkleTree - insert (1)`,
+            () => {
+                tree1.insert(leaves.length)
+            }
+        ]
+
+        const fn2: FN = [
+            `Old IncrementalMerkleTree - insert (1)`,
+            () => {
+                tree2.insert(leaves.length)
+            }
+        ]
+
+        await generateBenchmarks(fn1, fn2, name, "insert")
+    }
+
+    {
+        const fn1: FN = [
+            `New IncrementalMerkleTree - insert (${leaves.length})`,
+            () => {
+                for (let i = 0 + 1; i < leaves.length; i += 1) {
+                    tree1.insert(leaves[i] * 2 + 1)
+                }
+            }
+        ]
+
+        const fn2: FN = [
+            `Old IncrementalMerkleTree - insert (${leaves.length})`,
+            () => {
+                for (let i = 0; i < leaves.length; i += 1) {
+                    tree2.insert(leaves[i] * 2 + 1)
+                }
+            }
+        ]
+
+        await generateBenchmarks(fn1, fn2, name, "insert")
+    }
+
+    {
+        const fn1: FN = [
+            `New IncrementalMerkleTree - update (1)`,
+            () => {
+                tree1.update(0, 2)
+            }
+        ]
+
+        const fn2: FN = [
+            `Old IncrementalMerkleTree - update (1)`,
+            () => {
+                tree2.update(0, 2)
+            }
+        ]
+
+        await generateBenchmarks(fn1, fn2, name, "update")
+    }
+
+    {
+        const fn1: FN = [
+            `New IncrementalMerkleTree - delete (1)`,
+            () => {
+                tree1.delete(0)
+            }
+        ]
+
+        const fn2: FN = [
+            `Old IncrementalMerkleTree - delete (1)`,
+            () => {
+                tree2.delete(0)
+            }
+        ]
+
+        await generateBenchmarks(fn1, fn2, name, "delete")
+    }
+
+    {
+        let proofNewIMT: any
+        let proofOldIMT: MerkleProof
+
+        const fn1: FN = [
+            `New IncrementalMerkleTree - generateProof`,
+            () => {
+                proofNewIMT = tree1.generateProof(1)
+            }
+        ]
+
+        const fn2: FN = [
+            `Old IncrementalMerkleTree - generateProof`,
+            () => {
+                proofOldIMT = tree2.createProof(1)
+            }
+        ]
+
+        await generateBenchmarks(fn1, fn2, name, "generateProof")
+
+        const fn3: FN = [
+            `New IncrementalMerkleTree - verifyProof`,
+            () => {
+                tree1.verifyProof(proofNewIMT)
+            }
+        ]
+
+        const fn4: FN = [
+            `Old IncrementalMerkleTree - verifyProof`,
+            () => {
+                tree2.verifyProof(proofOldIMT)
+            }
+        ]
+
+        await generateBenchmarks(fn3, fn4, name, "verifyProof")
+    }
 }
