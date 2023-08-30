@@ -5,11 +5,14 @@
             <source media="(prefers-color-scheme: light)" srcset="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon.svg">
             <img width="40" alt="Semaphore icon." src="https://github.com/semaphore-protocol/website/blob/main/static/img/semaphore-icon.svg">
         </picture>
-        Semaphore V4 - Solidity
+        Semaphore V4 - Solidity Merkle tree
     </h1>
 </p>
 
 ## Benchmarks
+
+Gas cost 
+The insertions of the new implementation are cheaper initially, then get closer to the old version as it grows.
 
 |                 | Insert (1) | Insert (100) | Insert (200) | Insert (500) | Update (1) | Remove (1) | Deployment |
 | --------------- | ---------- | ------------ | ------------ | ------------ | ---------- | ---------- | ---------- |
