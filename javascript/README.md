@@ -103,4 +103,4 @@ If you want to run the benchmarks yourself install the dependencies with `yarn` 
 
 For more information about gas savings and Solidity benchmarks read the `solidity` [README.md](https://github.com/semaphore-protocol/research/tree/main/solidity) file.
 
-\*The `insert` function has been executed 256 times as it only takes 1 leaf as a parameter, whereas the `insertMany` function supports lists of leaves.
+\*The `insert` function has been executed 256 times as it only takes 1 leaf as a parameter, whereas the `insertMany` function supports batch insertions and takes a list of leaves as a parameter.
