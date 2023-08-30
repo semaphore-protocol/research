@@ -92,6 +92,13 @@ console.log(tree.verifyProof(proof)) // true
 
 ## Benchmarks
 
-WIP
+Benchmarks were run on a Intel Core i7-1165G7, 16 GB RAM machine.
+
+|                 |   Init (256)   |   Insert (1)     |   Insert (256)   |   InsertMany (256)   |   Update (1)   |
+| --------------- | -------------- | ---------------- | ---------------- | -------------------- | -------------- |
+| Old Mekrle tree |   `57ms`       |    `3.6ms`       |      `956ms`     |                      |       `4ms`    |
+| New Merkle tree |   `54ms`       |    `1ms`         |      `348ms`     |        `46ms`        |       `3ms`    |
+
+If you want to run the benchmarks yourself install the dependencies with `yarn` in the `javascript` folder and then run `yarn benchmarks`.
 
 For more information about gas savings and Solidity benchmarks read the `solidity` [README.md](https://github.com/semaphore-protocol/research/tree/main/solidity) file.
