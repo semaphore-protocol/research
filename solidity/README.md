@@ -11,8 +11,6 @@
 
 ## Benchmarks
 
-Benchmarks were run on a MacBook Pro, 16 GB RAM machine.
-
 |                 | Insert (1) | Insert (100) | Insert (200) | Insert (500) | Update (1) | Remove (1) | Deployment |
 | --------------- | ---------- | ------------ | ------------ | ------------ | ---------- | ---------- | ---------- |
 | Old Mekrle tree | `1098014`  | `514772`     | `510467`     | `506582`     | `794762`   | `793419`   | `1834586`  |
