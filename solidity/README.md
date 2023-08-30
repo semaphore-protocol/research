@@ -12,6 +12,7 @@
 ## Benchmarks
 
 Gas cost 
+
 The insertions of the new implementation are cheaper initially, then get closer to the old version as it grows.
 
 |                 | Insert (1) | Insert (100) | Insert (200) | Insert (500) | Update (1) | Remove (1) | Deployment |
