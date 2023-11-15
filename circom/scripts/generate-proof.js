@@ -5,8 +5,10 @@ import { IncrementalMerkleTree } from "@semaphore-research/merkle-tree"
 import { readFileSync } from "fs"
 import { poseidon1 } from "poseidon-lite/poseidon1.js"
 import { poseidon2 } from "poseidon-lite/poseidon2.js"
-import { groth16 } from "snarkjs"
+import { prove, verify, buildBn128 } from "@zk-kit/groth16"
 import { time } from "./utils.js"
+
+await buildBn128()
 
 // ############## V3 ##############
 {
@@ -58,7 +60,7 @@ import { time } from "./utils.js"
 
     const fullProof = await time(
         () =>
-            groth16.fullProve(
+            prove(
                 {
                     identitySecret,
                     treeDepth: tree.depth,
@@ -78,7 +80,7 @@ import { time } from "./utils.js"
     await time(async () => {
         const verificationKey = JSON.parse(readFileSync("./build/verification_key.json", "utf8"))
 
-        if (!(await groth16.verify(verificationKey, fullProof.publicSignals, fullProof.proof))) {
+        if (!(await verify(verificationKey, fullProof))) {
             console.error("The proof is not valid!")
         }
     }, "Verify v4 proof")

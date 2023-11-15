@@ -22,7 +22,7 @@ Once you are in `circom` folder:
 
 The difference between version 3 and 4 is in this case mainly due to the different version of SnarkJS. Benchmarks were run on a Intel Core i7-1165G7, 16 GB RAM machine.
 
-|              | Generate proof | Verify proof | SnarkJS version | Constraints | Tree depth |
-| ------------ | -------------- | ------------ | --------------- | ----------- | ---------- |
-| Semaphore v3 | `1219ms`       | `343ms`      | `v0.4.16`       | `4582`      | `16`       |
-| Semaphore v4 | `525ms`        | `139ms`      | `v0.7.0`        | `4374`      | `16`       |
+|              | Generate proof | Verify proof | Constraints | Tree depth |
+| ------------ | -------------- | ------------ | ----------- | ---------- |
+| Semaphore v3 | `404ms`        | `14ms`       | `4582`      | `16`       |
+| Semaphore v4 | `382ms`        | `13ms`       | `4374`      | `16`       |
