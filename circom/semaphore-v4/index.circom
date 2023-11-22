@@ -1,4 +1,4 @@
-pragma circom 2.0.0;
+pragma circom 2.1.5;
 
 include "../node_modules/circomlib/circuits/poseidon.circom";
 include "../merkle-tree/index.circom";
@@ -6,18 +6,18 @@ include "../merkle-tree/index.circom";
 template Semaphore(MAX_DEPTH) {
     signal input identitySecret;
     signal input treeDepth, treeIndices[MAX_DEPTH], treeSiblings[MAX_DEPTH];
-    signal input signalHash;
+    signal input message;
     signal input scope;
 
-    signal output treeRoot, nullifierHash;
+    signal output treeRoot, nullifier;
 
-    var identityCommitment = Poseidon(1)([identitySecret]);
+    var treeLeaf = Poseidon(1)([identitySecret]);
 
-    treeRoot <== CalculateMerkleRoot(MAX_DEPTH)(identityCommitment, treeDepth, treeIndices, treeSiblings);
-    nullifierHash <== Poseidon(2)([scope, identitySecret]);
+    treeRoot <== CalculateMerkleRoot(MAX_DEPTH)(treeLeaf, treeDepth, treeIndices, treeSiblings);
+    nullifier <== Poseidon(2)([scope, identitySecret]);
 
     // Dummy constraint to prevent compiler from optimizing it.
-    signal signalHashSquared <== signalHash * signalHash;
+    signal dummySquare <== message * message;
 }
 
-component main {public [signalHash, scope]} = Semaphore(16);
+component main {public [message, scope]} = Semaphore(16);

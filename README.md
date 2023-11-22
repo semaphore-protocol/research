@@ -59,12 +59,14 @@ The Semaphore v4 circuit maintains pretty much the same structure as version 3. 
 
 1. Variable names:
     1. External Nullifier → Scope
-    2. Siblings → Tree Siblings
-    3. Path Indices → Tree Indices
+    2. SignalHash → Message
+    3. NullifierHash → Nullifier
+    4. Siblings → Tree Siblings
+    5. Path Indices → Tree Indices
 2. Simplified identity: The two old identity secrets (`trapdoor` and `nullifier`) have been replaced by 1 secret only (`secret`). So `identity commitment = hash(identity secret)`, and `nullifier hash = hash(scope, identity secret)`.
 3. Syntactic sugar: The circuit uses the new Circom [Anonymous Components](https://docs.circom.io/circom-language/anonymous-components-and-tuples/#anonymous-components) and contains [23](https://github.com/semaphore-protocol/research/blob/main/circom/semaphore-v4/index.circom) (Semaphore) + [33](https://github.com/semaphore-protocol/research/blob/main/circom/merkle-tree/index.circom) (Merkle tree) lines of code. Semaphore v3 contains [90](https://github.com/semaphore-protocol/semaphore/blob/main/packages/circuits/semaphore.circom) + [40](https://github.com/semaphore-protocol/semaphore/blob/main/packages/circuits/tree.circom) lines of code.
 4. Additional input: The circuit takes an extra parameter to define the tree depth, which can now be dynamic. Even if the circuit has been compiled with a constant tree depth of 20, proofs generated with a Merkle tree with a depth of less than 20 can still be verified with the same circuit.
-5. Additional circuit: A [new circuit](https://github.com/semaphore-protocol/research/blob/main/circom/preimage-proof/index.circom) has been added to allow developers to prove they own the Semaphore identity secret without revealing it. This circuit could be part of the [zk-kit monorepo](https://github.com/privacy-scaling-explorations/zk-kit) and used for other use-cases too as it's basically a simple pre-image proof with a nullifier.
+5. Additional circuit: A [new circuit](https://github.com/semaphore-protocol/research/blob/main/circom/poseidon-proof/index.circom) has been added to allow developers to prove someone owns a Semaphore identity secret without revealing it. It could also be used to de-anonymize Semaphore proofs. This circuit could be part of the [zk-kit monorepo](https://github.com/privacy-scaling-explorations/zk-kit) and used for other use-cases too as it's basically a simple pre-image proof with a nullifier.
 
 ---
 
