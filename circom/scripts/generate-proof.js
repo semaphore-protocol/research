@@ -10,30 +10,58 @@ import { time } from "./utils.js"
 
 await buildBn128()
 
-// ############## V3 ##############
+// ############## PoseidonProof ##############
+{
+    // Generate proof
+
+    const fullProof = await time(
+        () =>
+            prove(
+                {
+                    in: 1,
+                    scope: 2
+                },
+                "./build/poseidon-proof/index_js/index.wasm",
+                "./build/poseidon-proof/index_final.zkey"
+            ),
+        "Generate Poseidon proof"
+    )
+
+    // Verify proof
+
+    await time(async () => {
+        const verificationKey = JSON.parse(readFileSync("./build/poseidon-proof/verification_key.json", "utf8"))
+
+        if (!(await verify(verificationKey, fullProof))) {
+            console.error("The proof is not valid!")
+        }
+    }, "Verify Poseidon proof")
+}
+
+// ############## Semaphore V3 ##############
 {
     const identity = new Identity()
     const group = new Group(1, 16, [1, 2, 3, 4, 5, identity.commitment])
 
-    // Generate v3 proof
+    // Generate proof
 
     const fullProof = await time(
         () =>
             generateProof(identity, group, 1, 999, {
-                zkeyFilePath: "./build/semaphore.zkey",
-                wasmFilePath: "./build/semaphore.wasm"
+                zkeyFilePath: "./build/semaphore-v3/semaphore.zkey",
+                wasmFilePath: "./build/semaphore-v3/semaphore.wasm"
             }),
         "Generate v3 proof"
     )
 
-    // Verify v4 proof
+    // Verify proof
 
     await time(async () => {
         await verifyProof(fullProof, 16)
     }, "Verify v3 proof")
 }
 
-// ############## V4 ##############
+// ############## Semaphore V4 ##############
 {
     const identitySecret = 123
     const identityCommitment = poseidon1([identitySecret])
@@ -56,7 +84,7 @@ await buildBn128()
         }
     }
 
-    // Generate v4 proof
+    // Generate proof
 
     const fullProof = await time(
         () =>
@@ -67,18 +95,18 @@ await buildBn128()
                     treeIndices: indices,
                     treeSiblings: siblings,
                     scope: 1,
-                    signalHash: 999
+                    message: 999
                 },
-                "./build/index_js/index.wasm",
-                "./build/index_final.zkey"
+                "./build/semaphore-v4/index_js/index.wasm",
+                "./build/semaphore-v4/index_final.zkey"
             ),
         "Generate v4 proof"
     )
 
-    // Verify v4 proof
+    // Verify proof
 
     await time(async () => {
-        const verificationKey = JSON.parse(readFileSync("./build/verification_key.json", "utf8"))
+        const verificationKey = JSON.parse(readFileSync("./build/semaphore-v4/verification_key.json", "utf8"))
 
         if (!(await verify(verificationKey, fullProof))) {
             console.error("The proof is not valid!")

@@ -4,7 +4,8 @@
     "private": true,
     "scripts": {
         "start": "node scripts/generate-proof.js",
-        "run:ceremony": "bash scripts/run-ceremony.sh semaphore-v4",
+        "run:all-ceremonies": "npm run run:ceremony semaphore-v4 && npm run run:ceremony poseidon-proof",
+        "run:ceremony": "bash scripts/run-ceremony.sh",
         "compile:v4": "circom semaphore-v4/index.circom --r1cs",
         "compile:v3": "circom semaphore-v3/index.circom --r1cs",
         "compile:poseidon-proof": "circom poseidon-proof/index.circom --r1cs"
